@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  labels:
+    app: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: api-gateway:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APP_CUSTOMERS_URI
+          valueFrom:
+            configMapKeyRef:
+              name: api-gateway-config
+              key: APP_CUSTOMERS_URI
+        - name: APP_VETS_URI
+          valueFrom:
+            configMapKeyRef:
+              name: api-gateway-config
+              key: APP_VETS_URI
+        - name: APP_VISITS_URI
+          valueFrom:
+            configMapKeyRef:
+              name: api-gateway-config
+              key: APP_VISITS_URI
