@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    schema: classpath*:schema-hsqldb.sql
+    data: classpath*:data-hsqldb.sql
+
+vets:
+  cache:
+    ttl: 10
+    heap-size: 10

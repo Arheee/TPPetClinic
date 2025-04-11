@@ -1,0 +1,40 @@
+spring:
+  cache:
+    cache-names: vets
+  datasource:
+    initialization-mode: always
+    schema: classpath*:db/hsqldb/schema.sql
+    data: classpath*:db/hsqldb/data.sql
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  zipkin:
+    enabled: false
+
+server:
+  port: 8083
+
+wavefront:
+  application:
+    name: petclinic
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    export:
+      wavefront:
+        enabled: false
+---
+spring:
+  profiles: mysql
+  datasource:
+    schema: classpath*:db/mysql/schema.sql
+    data: classpath*:db/mysql/data.sql

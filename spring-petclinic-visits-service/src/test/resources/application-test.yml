@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    schema: classpath*:schema-hsqldb.sql
+    data: classpath*:data-hsqldb.sql
+
+logging:
+  level:
+    org.springframework: INFO

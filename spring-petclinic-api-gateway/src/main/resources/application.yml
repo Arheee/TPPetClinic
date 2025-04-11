@@ -1,0 +1,60 @@
+app:
+  customers:
+    uri: http://localhost:8082
+  vets:
+    uri: http://localhost:8083
+  visits:
+    uri: http://localhost:8084
+
+wavefront:
+  application:
+    name: petclinic
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      x-forwarded:
+        enabled: true
+        for-enabled: true
+        proto-enabled: true
+        host-append: false
+        port-append: false
+        proto-append: false
+      routes:
+        - id: vets-service
+          uri: ${app.vets.uri}
+          predicates:
+            - Path=/api/vet/**
+          filters:
+            - StripPrefix=2
+        - id: visits-service
+          uri: ${app.visits.uri}
+          predicates:
+            - Path=/api/visit/**
+          filters:
+            - StripPrefix=2
+        - id: customers-service
+          uri: ${app.customers.uri}
+          predicates:
+            - Path=/api/customer/**
+          filters:
+            - StripPrefix=2
+  zipkin:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    export:
+      wavefront:
+        enabled: false
